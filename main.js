@@ -28,7 +28,10 @@ const renderToDom = (divId, htmlToRender) => {
 };
 
 const cardsOnDom = (firstYears) => {
-  let domString = "";
+  let domString = `<div class="student=form">
+    <input type="text" class="form-control" id="name placeholder="Name" required>
+    <label for="floatingInput">Name</label>
+  </div>`;
   for (const student of firstYears) {
     domString += `<div class="student-cards">
       <h2 class="student-card-name">${student.name}</h2>
