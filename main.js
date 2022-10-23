@@ -1,4 +1,4 @@
-//Initialize an array of objects that represent first year students
+//Initialize an array of objects that represents first year students
 const firstYears = [
   {
     id: 1,
@@ -21,28 +21,29 @@ const firstYears = [
     house: "Slytherin",
   }
 ];
+
 const renderToDom = (divId, htmlToRender) => {
-  const selectedDiv =document.querySelector(divId);
+  const selectedDiv = document.querySelector(divId)
   selectedDiv.innerHTML = htmlToRender;
 };
 
 const cardsOnDom = (firstYears) => {
   let domString = "";
   for (const student of firstYears) {
-    domString += `<div class="card" style="width: 18rem;">
-    <h5 class="card-title">${student.name}</h5>    
-    <img src=${student.imageUrl} class="card-img-top" alt=${pet.name}>
-        <div class="card-body">
-        <p class="card-text">${student.house}</p>
-        <button class="btn btn-danger" id="delete--${student.id}">Expel!</button>
-        </div>
-      </div>`;
-    };
-    renderToDom("#app",domString);
+    domString += `<div class="student-cards">
+      <h2 class="student-card-name">${student.name}</h2>
+      <div class="student-card-house">
+        <p class="student-house">${student.house}</p>
+        <button class="btn btn-danger' id="delete--${student.id}">Expel!</button>
+      </div>
+    </div>`;
   };
+  renderToDom("#form", domString)
+};
 
-  const enterFormChamber = document.querySelector("#welcome-card")
+const sortingFormButton = document.querySelector("#enter-button")
 
-  enterFormChamber.addEventListener("click", () => {
-    return cardsOnDom(firstYears)
-  });
+sortingFormButton.addEventListener("click", () => {
+  //console.log("Something")
+  return cardsOnDom(firstYears)
+});
