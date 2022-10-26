@@ -38,7 +38,7 @@ const cardsOnDom = (firstYears) => {
       </div>
     </div>`;
   };
-  renderToDom("#student-cards", domString)
+  renderToDom("#cards", domString)
 };
 
 const firstYearsFilter = (array, studentHouse) => {
@@ -59,7 +59,7 @@ const addNewStudent = (event) => {
   const newStudentObj = {
     id: firstYears.length + 1,
     name: document.querySelector("#name").value,
-    house: document.querySelector("#house").value
+    //house: document.querySelector("#house").value
   }
   firstYears.push(newStudentObj);
   cardsOnDom(firstYears);
@@ -68,7 +68,8 @@ const addNewStudent = (event) => {
 
 form.addEventListener("submit", addNewStudent)
 
-const studentCards = document.querySelector("#student-cards");
+
+const studentCards = document.querySelector("#cards");
 
 studentCards.addEventListener("click", (event) => {
 

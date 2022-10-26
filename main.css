@@ -2,3 +2,15 @@ body {
   background-color: rgb(245, 225, 114);
   color: black;
 }
+
+#cards {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.student-card {
+  margin: 20px;
+  padding: 20px;
+  flex: 0 1 calc(30% - 40px); 
+  text-align: center;
+}
