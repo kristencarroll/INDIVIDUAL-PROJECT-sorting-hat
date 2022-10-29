@@ -22,13 +22,17 @@ const firstYears = [
   }
 ];
 
+const voldemortsArmy = [];
+const studentHouses = ["Gryffindor", "Ravenclaw", "Hufflepuff", "Slytherin"];
+
 const renderToDom = (divId, htmlToRender) => {
   const selectedDiv = document.querySelector(divId)
   selectedDiv.innerHTML = htmlToRender;
 };
 
-const cardsOnDom = (firstYears) => {
+const firstYearsCardsOnDom = (firstYears) => {
   let domString = "";
+  
   for (const student of firstYears) {
     domString += `<div class="student-cards">
       <h2 class="student-card-name">${student.name}</h2>
@@ -37,9 +41,43 @@ const cardsOnDom = (firstYears) => {
         <button class="btn btn-danger' id="delete--${student.id}">Expel!</button>
       </div>
     </div>`;
-  };
-  renderToDom("#cards", domString)
-};
+  }
+  renderToDom("#cards", domString);
+}
+
+const voldemortsArmyCardsOnDom = (firstYears) => {
+  let domString = "";
+  
+  for (const student of firstYears) {
+    domString += `<div class="student-cards">
+      <h2 class="student-card-name">${student.name}</h2>
+      <div class="student-card-house">
+        <p class="student-house">${student.house}</p>
+        <button class="btn btn-danger' id="delete--${student.id}">Expel!</button>
+      </div>
+    </div>`;
+  }
+  renderToDom("#cards", domString);
+}
+
+const formOnDom = () => {
+  const domString = ` <div class="form-floating mb-3">
+  <input type="text" class="form-control" id="name" placeholder="Name" required>
+  <label for=""floatingInput>Name</label>
+</div>
+<button type="submit" class="btn btn-success" id="form-submit">Sort!</button>`;
+
+renderToDom("#form", domString);
+}
+
+const formStarter = () => {
+  const domString = `<form>
+  <button type="button" class="btn btn-info" id="sort-student">Sort!</button>
+</form>`
+
+renderToDom("#form", domString);
+}
+
 
 const firstYearsFilter = (array, studentHouse) => {
   const firstYearsArray = [ ];
@@ -47,47 +85,60 @@ const firstYearsFilter = (array, studentHouse) => {
   for (const student of array) {
     if (student.house === studentHouse)
       firstYearsArray.push(student);
-  }
+    }
   return firstYearsArray
 }
 
-const form = document.querySelector("form")
 
-const addNewStudent = (event) => {
-  event.preventDefault();
+const formLogic = () => {
 
-  const newStudentObj = {
-    id: firstYears.length + 1,
-    name: document.querySelector("#name").value,
-    //house: document.querySelector("#house").value
-  }
-  firstYears.push(newStudentObj);
-  cardsOnDom(firstYears);
-  form.reset();
+  const form = document.querySelector("#form")
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const newStudentObj = {
+      id: firstYears.length + 1,
+      name: document.querySelector("#name").value,
+      house: studentHouses[Math.floor(Math.random() * studentHouses.length)],
+    };
+  
+    firstYears.push(newStudentObj);
+    firstYearsCardsOnDom(firstYears);
+  
+    
+    form.reset();
+  })
+}
+//form.addEventListener("submit", addNewStudent)
+const buttonClickAddForm = () => {
+  document.querySelector("#enter-button").addEventListener('click', formOnDom);
 }
 
-form.addEventListener("submit", addNewStudent)
+const expelStudent = () => {  
+  const studentCards = document.querySelector("#cards");
 
-
-const studentCards = document.querySelector("#cards");
-
-studentCards.addEventListener("click", (event) => {
+  studentCards.addEventListener("click", (event) => {
 
   if (event.target.id.includes("delete")) {
     const [, id] = event.target.id.split("--");
 
     const index = firstYears.findIndex(event => event.id === Number(id));
-    firstYears.splice(index, 1);
+    
+    const expelledStudent = firstYears.splice(index, 1);
 
-    cardsOnDom(firstYears);
-  }
-});
+    voldemortsArmy.push(expelledStudent[0]);
 
-//const startApp = () => {
-  //cardsOnDom(firstYears);
-  //events()
-//}
-//startApp();
+    
+    
+    firstYearsCardsOnDom(firstYears);
+    voldemortsArmyCardsOnDom(voldemortsArmy)
+    }
+  })
+};
+expelStudent();
+
+
 
 const allFirstYears = document.querySelector("#allFirstYears")
 const gryffindorButton = document.querySelector("#gryffindor")
@@ -96,25 +147,34 @@ const hufflepuffButton = document.querySelector("#hufflepuff")
 const slytherinButton = document.querySelector("#slytherin")
 
 allFirstYears.addEventListener("click", () => {
-  return cardsOnDom(firstYears)
+  return firstYearsCardsOnDom(firstYears)
 });
 
 gryffindorButton.addEventListener("click", () => {
   const gryffindorList = firstYearsFilter(firstYears, "Gryffindor");
-  cardsOnDom(gryffindorList);
+  firstYearsCardsOnDom(gryffindorList);
 });
 
 ravenclawButton.addEventListener("click", () => {
   const ravenclawList = firstYearsFilter(firstYears, "Ravenclaw");
-  cardsOnDom(ravenclawList);
+  firstYearsCardsOnDom(ravenclawList);
 });
 
 hufflepuffButton.addEventListener("click", () => {
   const hufflepuffList = firstYearsFilter(firstYears, "Hufflepuff");
-  cardsOnDom(hufflepuffList);
+  firstYearsCardsOnDom(hufflepuffList);
 });
 
 slytherinButton.addEventListener("click", () => {
   const slytherinList = firstYearsFilter(firstYears, "Slytherin");
-  cardsOnDom(slytherinList);
+  firstYearsCardsOnDom(slytherinList);
 });
+
+const startApp = () => {
+  firstYearsCardsOnDom(firstYears);
+  formStarter();
+  buttonClickAddForm();
+  formLogic();
+  
+}
+startApp();
